@@ -120,4 +120,38 @@ export class BookRepository {
             categories: categoryRows,
         };
     }
+
+    async create(data: {
+        title: string;
+        authorIds: number[];
+        categoryIds: number[];
+    }) {
+        return db.transaction(async (tx) => {
+            const [book] = await tx
+                .insert(books)
+                .values({
+                    title: data.title,
+                })
+                .returning({
+                    id: books.id,
+                    title: books.title,
+                });
+
+            await tx.insert(bookAuthors).values(
+                data.authorIds.map((authorId) => ({
+                    bookId: book!.id,
+                    authorId,
+                })),
+            );
+
+            await tx.insert(bookCategories).values(
+                data.categoryIds.map((categoryId) => ({
+                    bookId: book!.id,
+                    categoryId,
+                })),
+            );
+
+            return book;
+        });
+    }
 }
