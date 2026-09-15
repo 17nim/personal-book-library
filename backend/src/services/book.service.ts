@@ -16,6 +16,22 @@ export class BookService {
         authorIds: number[];
         categoryIds: number[];
     }) {
+        const authorsExist = await this.bookRepository.authorsExist(
+            data.authorIds,
+        );
+
+        if (!authorsExist) {
+            throw new Error("Author not found");
+        }
+
+        const categoriesExist = await this.bookRepository.categoriesExist(
+            data.categoryIds,
+        );
+
+        if (!categoriesExist) {
+            throw new Error("Category not found");
+        }
+
         return this.bookRepository.create(data);
     }
 

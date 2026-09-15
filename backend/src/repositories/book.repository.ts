@@ -165,4 +165,24 @@ export class BookRepository {
 
         return result.length > 0;
     }
+
+    async authorsExist(ids: number[]) {
+        const rows = await db
+            .select({
+                id: authors.id,
+            })
+            .from(authors);
+
+        return ids.every((id) => rows.some((row) => row.id === id));
+    }
+
+    async categoriesExist(ids: number[]) {
+        const rows = await db
+            .select({
+                id: categories.id,
+            })
+            .from(categories);
+
+        return ids.every((id) => rows.some((row) => row.id === id));
+    }
 }

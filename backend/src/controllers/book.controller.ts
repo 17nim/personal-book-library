@@ -1,5 +1,11 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { BookService } from "../services/book.service.js";
+import {
+    bookIdSchema,
+    createBookSchema,
+    getBooksQuerySchema,
+} from "../schemas/book.schema.js";
+import { z } from "zod";
 
 type GetBooksQuery = {
     authorId?: string;
@@ -29,12 +35,21 @@ export class BookController {
         }>,
         reply: FastifyReply,
     ) {
+        const result = getBooksQuerySchema.safeParse(request.query);
+
+        if (!result.success) {
+            return reply.status(400).send({
+                message: "Invalid query parameters",
+                errors: z.treeifyError(result.error),
+            });
+        }
+
         const filters = {
-            ...(request.query.authorId !== undefined && {
-                authorId: Number(request.query.authorId),
+            ...(result.data.authorId !== undefined && {
+                authorId: result.data.authorId,
             }),
-            ...(request.query.categoryId !== undefined && {
-                categoryId: Number(request.query.categoryId),
+            ...(result.data.categoryId !== undefined && {
+                categoryId: result.data.categoryId,
             }),
         };
 
@@ -49,9 +64,15 @@ export class BookController {
         }>,
         reply: FastifyReply,
     ) {
-        const id = Number(request.params.id);
+        const result = bookIdSchema.safeParse(request.params);
 
-        const book = await this.bookService.getBookById(id);
+        if (!result.success) {
+            return reply.status(400).send({
+                message: "Invalid book ID",
+            });
+        }
+
+        const book = await this.bookService.getBookById(result.data.id);
 
         if (!book) {
             return reply.status(404).send({
@@ -68,9 +89,40 @@ export class BookController {
         }>,
         reply: FastifyReply,
     ) {
-        const book = await this.bookService.createBook(request.body);
+        const result = createBookSchema.safeParse(request.body);
 
-        return reply.status(201).send(book);
+        if (!result.success) {
+            return reply.status(400).send({
+                message: "Invalid request body",
+                errors: result.error.flatten(),
+            });
+        }
+
+        try {
+            const book = await this.bookService.createBook(result.data);
+
+            return reply.status(201).send(book);
+        } catch (error) {
+            if (
+                error instanceof Error &&
+                error.message === "Author not found"
+            ) {
+                return reply.status(400).send({
+                    message: "Author not found",
+                });
+            }
+
+            if (
+                error instanceof Error &&
+                error.message === "Category not found"
+            ) {
+                return reply.status(400).send({
+                    message: "Category not found",
+                });
+            }
+
+            throw error;
+        }
     }
 
     async deleteBook(
@@ -79,9 +131,15 @@ export class BookController {
         }>,
         reply: FastifyReply,
     ) {
-        const id = Number(request.params.id);
+        const result = bookIdSchema.safeParse(request.params);
 
-        const deleted = await this.bookService.deleteBook(id);
+        if (!result.success) {
+            return reply.status(400).send({
+                message: "Invalid book ID",
+            });
+        }
+
+        const deleted = await this.bookService.deleteBook(result.data.id);
 
         if (!deleted) {
             return reply.status(404).send({
