@@ -18,4 +18,8 @@ export class BookService {
     }) {
         return this.bookRepository.create(data);
     }
+
+    async deleteBook(id: number) {
+        return this.bookRepository.delete(id);
+    }
 }

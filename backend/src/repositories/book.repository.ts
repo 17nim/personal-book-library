@@ -154,4 +154,15 @@ export class BookRepository {
             return book;
         });
     }
+
+    async delete(id: number) {
+        const result = await db
+            .delete(books)
+            .where(eq(books.id, id))
+            .returning({
+                id: books.id,
+            });
+
+        return result.length > 0;
+    }
 }

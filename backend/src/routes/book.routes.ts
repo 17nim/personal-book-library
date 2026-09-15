@@ -1,5 +1,9 @@
 import type { FastifyInstance } from "fastify";
-import { BookController, type CreateBookBody } from "../controllers/book.controller.js";
+import {
+    BookController,
+    type CreateBookBody,
+    type DeleteBookParams,
+} from "../controllers/book.controller.js";
 import { BookService } from "../services/book.service.js";
 import { BookRepository } from "../repositories/book.repository.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
@@ -17,5 +21,12 @@ export const bookRoutes = async (app: FastifyInstance) => {
             preHandler: authMiddleware,
         },
         controller.createBook.bind(controller),
+    );
+    app.delete<{ Params: DeleteBookParams }>(
+        "/api/books/:id",
+        {
+            preHandler: authMiddleware,
+        },
+        controller.deleteBook.bind(controller),
     );
 };

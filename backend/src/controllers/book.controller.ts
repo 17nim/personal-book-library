@@ -16,6 +16,10 @@ export type CreateBookBody = {
     categoryIds: number[];
 };
 
+export type DeleteBookParams = {
+    id: string;
+};
+
 export class BookController {
     constructor(private readonly bookService: BookService) {}
 
@@ -67,5 +71,24 @@ export class BookController {
         const book = await this.bookService.createBook(request.body);
 
         return reply.status(201).send(book);
+    }
+
+    async deleteBook(
+        request: FastifyRequest<{
+            Params: DeleteBookParams;
+        }>,
+        reply: FastifyReply,
+    ) {
+        const id = Number(request.params.id);
+
+        const deleted = await this.bookService.deleteBook(id);
+
+        if (!deleted) {
+            return reply.status(404).send({
+                message: "Book not found",
+            });
+        }
+
+        return reply.status(204).send();
     }
 }
