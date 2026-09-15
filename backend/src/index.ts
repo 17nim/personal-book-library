@@ -2,6 +2,8 @@ import "dotenv/config";
 import fastify from "fastify";
 import cors from "@fastify/cors";
 import { bookRoutes } from "./routes/book.routes.js";
+import { authorRoutes } from "./routes/author.routes.js";
+import { categoryRoutes } from "./routes/category.routes.js";
 
 const app = fastify({
     logger: true,
@@ -18,6 +20,8 @@ app.get("/health", async () => {
 });
 
 app.register(bookRoutes);
+app.register(authorRoutes);
+app.register(categoryRoutes);
 
 const start = async () => {
     try {
