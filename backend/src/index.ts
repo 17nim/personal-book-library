@@ -4,6 +4,7 @@ import cors from "@fastify/cors";
 import { bookRoutes } from "./routes/book.routes.js";
 import { authorRoutes } from "./routes/author.routes.js";
 import { categoryRoutes } from "./routes/category.routes.js";
+import { authRoutes } from "./routes/auth.routes.js";
 
 const app = fastify({
     logger: true,
@@ -22,6 +23,7 @@ app.get("/health", async () => {
 app.register(bookRoutes);
 app.register(authorRoutes);
 app.register(categoryRoutes);
+app.register(authRoutes);
 
 const start = async () => {
     try {
