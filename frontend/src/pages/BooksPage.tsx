@@ -1,12 +1,15 @@
 import { useEffect, useEffectEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { deleteBook, getBooks } from "../api/books";
 import { getAuthors } from "../api/authors";
 import { getCategories } from "../api/categories";
+import { removeToken } from "../auth/auth";
 import type { Author, Book, Category } from "../types/book";
 import { BookFilters } from "../components/BookFilters";
 import { BookForm } from "../components/BookForm";
 
 export const BooksPage = () => {
+  const navigate = useNavigate();
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -19,6 +22,11 @@ export const BooksPage = () => {
 
   const handleBookCreated = async () => {
     await loadBooks();
+  };
+
+  const handleLogout = () => {
+    removeToken();
+    navigate("/login", { replace: true });
   };
 
   const handleDeleteBook = async (id: number) => {
@@ -99,7 +107,12 @@ export const BooksPage = () => {
 
   return (
     <main>
-      <h1>Personal Book Library</h1>
+      <header>
+        <h1>Personal Book Library</h1>
+        <button type="button" onClick={handleLogout}>
+          Log out
+        </button>
+      </header>
 
       <BookForm
         authors={authors}
