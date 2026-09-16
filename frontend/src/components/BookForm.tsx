@@ -10,26 +10,10 @@ type BookFormProps = {
 
 export const BookForm = ({ authors, categories, onCreated }: BookFormProps) => {
   const [title, setTitle] = useState("");
-  const [authorIds, setAuthorIds] = useState<number[]>([]);
-  const [categoryIds, setCategoryIds] = useState<number[]>([]);
+  const [selectedAuthorId, setSelectedAuthorId] = useState("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const handleAuthorChange = (id: number) => {
-    setAuthorIds((current) =>
-      current.includes(id)
-        ? current.filter((authorId) => authorId !== id)
-        : [...current, id],
-    );
-  };
-
-  const handleCategoryChange = (id: number) => {
-    setCategoryIds((current) =>
-      current.includes(id)
-        ? current.filter((categoryId) => categoryId !== id)
-        : [...current, id],
-    );
-  };
 
   const handleSubmit = async (event: SubmitEvent) => {
     event.preventDefault();
@@ -40,6 +24,9 @@ export const BookForm = ({ authors, categories, onCreated }: BookFormProps) => {
       setError("Title is required");
       return;
     }
+
+    const authorIds = selectedAuthorId ? [Number(selectedAuthorId)] : [];
+    const categoryIds = selectedCategoryId ? [Number(selectedCategoryId)] : [];
 
     if (authorIds.length === 0) {
       setError("Select at least one author");
@@ -61,8 +48,8 @@ export const BookForm = ({ authors, categories, onCreated }: BookFormProps) => {
       });
 
       setTitle("");
-      setAuthorIds([]);
-      setCategoryIds([]);
+      setSelectedAuthorId("");
+      setSelectedCategoryId("");
 
       onCreated();
     } catch {
@@ -88,37 +75,41 @@ export const BookForm = ({ authors, categories, onCreated }: BookFormProps) => {
           />
         </div>
 
-        <fieldset className="choice-group">
-          <legend>Authors</legend>
+        <div className="field-group">
+          <label htmlFor="author">Author</label>
 
-          {authors.map((author) => (
-            <label className="choice-label" key={author.id}>
-              <input
-                type="checkbox"
-                checked={authorIds.includes(author.id)}
-                onChange={() => handleAuthorChange(author.id)}
-              />
+          <select
+            id="author"
+            value={selectedAuthorId}
+            onChange={(event) => setSelectedAuthorId(event.target.value)}
+          >
+            <option value="">Select an author</option>
 
-              {author.name}
-            </label>
-          ))}
-        </fieldset>
+            {authors.map((author) => (
+              <option key={author.id} value={author.id}>
+                {author.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <fieldset className="choice-group">
-          <legend>Categories</legend>
+        <div className="field-group">
+          <label htmlFor="category">Category</label>
 
-          {categories.map((category) => (
-            <label className="choice-label" key={category.id}>
-              <input
-                type="checkbox"
-                checked={categoryIds.includes(category.id)}
-                onChange={() => handleCategoryChange(category.id)}
-              />
+          <select
+            id="category"
+            value={selectedCategoryId}
+            onChange={(event) => setSelectedCategoryId(event.target.value)}
+          >
+            <option value="">Select a category</option>
 
-              {category.name}
-            </label>
-          ))}
-        </fieldset>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
         {error && <p className="form-error">{error}</p>}
 
