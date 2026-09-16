@@ -191,7 +191,7 @@ Make sure you have:
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/17nim/personal-book-library.git
 cd personal-book-library
 ```
 
@@ -295,10 +295,6 @@ _Add screenshot here._
 
 _Add screenshot here._
 
-### Add Book
-
-_Add screenshot here._
-
 ### Filtering
 
 _Add screenshot here._
@@ -311,7 +307,6 @@ _Add screenshot here._
 | -------------- | ---------------------------- |
 | `DATABASE_URL` | PostgreSQL connection string |
 | `JWT_SECRET`   | Secret used to sign JWTs     |
-| `PORT`         | Backend server port          |
 
 ### Frontend
 
