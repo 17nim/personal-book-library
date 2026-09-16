@@ -1,10 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "./pages/LoginPage";
+import { BooksPage } from "./pages/BooksPage";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
-
-const BooksPage = () => {
-  return <h1>Books</h1>;
-};
 
 function App() {
   return (
