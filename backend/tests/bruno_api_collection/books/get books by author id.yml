@@ -1,0 +1,20 @@
+info:
+  name: get books by author id
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/books?authorId=2"
+  params:
+    - name: authorId
+      value: "2"
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

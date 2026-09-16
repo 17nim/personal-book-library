@@ -1,0 +1,8 @@
+name: local
+variables:
+  - name: baseUrl
+    value: localhost:3000
+    description: ""
+  - secret: true
+    name: token
+    description: ""

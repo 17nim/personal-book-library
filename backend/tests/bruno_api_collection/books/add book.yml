@@ -1,0 +1,31 @@
+info:
+  name: add book
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/books"
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Clean Architecture",
+        "authorIds": [
+          1
+        ],
+        "categoryIds": [
+          1,
+          2
+        ]
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
