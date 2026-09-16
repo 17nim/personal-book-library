@@ -92,23 +92,6 @@ export const BooksPage = () => {
     loadFilters();
   }, []);
 
-  if (loading) {
-    return (
-      <main className="page-shell state-shell">
-        <p className="state-message">Loading your library...</p>
-      </main>
-    );
-  }
-
-  if (error) {
-    return (
-      <main className="page-shell state-shell">
-        <p className="state-message">{error}</p>
-        <button className="button button-primary" onClick={loadBooks}>Try again</button>
-      </main>
-    );
-  }
-
   return (
     <main className="page-shell">
       <header className="page-header">
@@ -137,7 +120,14 @@ export const BooksPage = () => {
             onCategoryChange={setCategoryId}
           />
 
-          {books.length === 0 ? (
+          {loading ? (
+            <p className="state-message">Loading your library...</p>
+          ) : error ? (
+            <>
+              <p className="state-message">{error}</p>
+              <button className="button button-primary" onClick={loadBooks}>Try again</button>
+            </>
+          ) : books.length === 0 ? (
             <p className="state-message empty-message">No books found.</p>
           ) : (
             <div className="book-grid">
