@@ -121,7 +121,7 @@ export const BooksPage = () => {
           />
 
           {loading ? (
-            <p className="state-message">Loading your library...</p>
+            <p className="state-message loading-message">Loading your library...</p>
           ) : error ? (
             <>
               <p className="state-message">{error}</p>
