@@ -289,15 +289,15 @@ Protected endpoints should also be tested without a valid JWT to verify that the
 
 ### Login
 
-_Add screenshot here._
+![Login screen](docs/images/login.png)
 
 ### Book Library
 
-_Add screenshot here._
+![Book library](docs/images/books.png)
 
 ### Filtering
 
-_Add screenshot here._
+![Book filtering](docs/images/filtering.png)
 
 ## Environment Variables
 
