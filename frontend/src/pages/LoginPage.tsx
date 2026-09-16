@@ -34,11 +34,14 @@ export const LoginPage = () => {
   };
 
   return (
-    <main>
-      <h1>Login</h1>
+    <main className="login-shell">
+      <section className="login-panel">
+        <p className="eyebrow">Personal Book Library</p>
+        <h1>Welcome back.</h1>
+        <p className="login-intro">Sign in to return to your shelves.</p>
 
-      <form onSubmit={handleSubmit}>
-        <div>
+        <form className="login-form" onSubmit={handleSubmit}>
+        <div className="field-group">
           <label htmlFor="username">Username</label>
 
           <input
@@ -48,7 +51,7 @@ export const LoginPage = () => {
           />
         </div>
 
-        <div>
+        <div className="field-group">
           <label htmlFor="password">Password</label>
 
           <input
@@ -59,12 +62,13 @@ export const LoginPage = () => {
           />
         </div>
 
-        {error && <p>{error}</p>}
+        {error && <p className="form-error">{error}</p>}
 
-        <button type="submit" disabled={loading}>
+        <button className="button button-primary button-wide" type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
-      </form>
+        </form>
+      </section>
     </main>
   );
 };

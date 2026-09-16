@@ -73,11 +73,12 @@ export const BookForm = ({ authors, categories, onCreated }: BookFormProps) => {
   };
 
   return (
-    <section>
+    <section className="add-book-panel">
       <h2>Add Book</h2>
+      <p className="section-caption">Save a new title to your collection.</p>
 
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form className="book-form" onSubmit={handleSubmit}>
+        <div className="field-group">
           <label htmlFor="title">Title</label>
 
           <input
@@ -87,11 +88,11 @@ export const BookForm = ({ authors, categories, onCreated }: BookFormProps) => {
           />
         </div>
 
-        <fieldset>
+        <fieldset className="choice-group">
           <legend>Authors</legend>
 
           {authors.map((author) => (
-            <label key={author.id}>
+            <label className="choice-label" key={author.id}>
               <input
                 type="checkbox"
                 checked={authorIds.includes(author.id)}
@@ -103,11 +104,11 @@ export const BookForm = ({ authors, categories, onCreated }: BookFormProps) => {
           ))}
         </fieldset>
 
-        <fieldset>
+        <fieldset className="choice-group">
           <legend>Categories</legend>
 
           {categories.map((category) => (
-            <label key={category.id}>
+            <label className="choice-label" key={category.id}>
               <input
                 type="checkbox"
                 checked={categoryIds.includes(category.id)}
@@ -119,9 +120,9 @@ export const BookForm = ({ authors, categories, onCreated }: BookFormProps) => {
           ))}
         </fieldset>
 
-        {error && <p>{error}</p>}
+        {error && <p className="form-error">{error}</p>}
 
-        <button type="submit" disabled={loading}>
+        <button className="button button-primary button-wide" type="submit" disabled={loading}>
           {loading ? "Adding..." : "Add Book"}
         </button>
       </form>

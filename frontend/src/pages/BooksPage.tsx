@@ -93,64 +93,80 @@ export const BooksPage = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading books...</p>;
+    return (
+      <main className="page-shell state-shell">
+        <p className="state-message">Loading your library...</p>
+      </main>
+    );
   }
 
   if (error) {
     return (
-      <div>
-        <p>{error}</p>
-        <button onClick={loadBooks}>Try again</button>
-      </div>
+      <main className="page-shell state-shell">
+        <p className="state-message">{error}</p>
+        <button className="button button-primary" onClick={loadBooks}>Try again</button>
+      </main>
     );
   }
 
   return (
-    <main>
-      <header>
-        <h1>Personal Book Library</h1>
-        <button type="button" onClick={handleLogout}>
+    <main className="page-shell">
+      <header className="page-header">
+        <div>
+          <p className="eyebrow">A quiet place for good books</p>
+          <h1>Personal Book Library</h1>
+          <p className="page-intro">Keep track of the stories you want to remember.</p>
+        </div>
+        <button className="button button-quiet" type="button" onClick={handleLogout}>
           Log out
         </button>
       </header>
 
-      <BookForm
-        authors={authors}
-        categories={categories}
-        onCreated={handleBookCreated}
-      />
-      <BookFilters
-        authors={authors}
-        categories={categories}
-        authorId={authorId}
-        categoryId={categoryId}
-        onAuthorChange={setAuthorId}
-        onCategoryChange={setCategoryId}
-      />
+      <div className="library-layout">
+        <aside className="library-sidebar">
+          <BookForm authors={authors} categories={categories} onCreated={handleBookCreated} />
+        </aside>
 
-      {books.length === 0 ? (
-        <p>No books found.</p>
-      ) : (
-        books.map((book) => (
-          <article key={book.id}>
-            <h2>{book.title}</h2>
+        <section className="collection-area" aria-label="Book collection">
+          <BookFilters
+            authors={authors}
+            categories={categories}
+            authorId={authorId}
+            categoryId={categoryId}
+            onAuthorChange={setAuthorId}
+            onCategoryChange={setCategoryId}
+          />
 
-            <p>
-              <strong>Authors:</strong>{" "}
-              {book.authors.map((author) => author.name).join(", ")}
-            </p>
+          {books.length === 0 ? (
+            <p className="state-message empty-message">No books found.</p>
+          ) : (
+            <div className="book-grid">
+              {books.map((book) => (
+                <article className="book-card" key={book.id}>
+                  <div className="book-card-topline">
+                    <span className="book-mark" aria-hidden="true">✦</span>
+                    <button className="delete-button" type="button" onClick={() => handleDeleteBook(book.id)}>
+                      Delete
+                    </button>
+                  </div>
+                  <h2>{book.title}</h2>
 
-            <p>
-              <strong>Categories:</strong>{" "}
-              {book.categories.map((category) => category.name).join(", ")}
-            </p>
-
-            <button type="button" onClick={() => handleDeleteBook(book.id)}>
-              Delete
-            </button>
-          </article>
-        ))
-      )}
+                  <div className="book-details">
+                    <p>
+                      <span className="detail-label">Authors</span>
+                      {book.authors.map((author) => author.name).join(", ")}
+                    </p>
+                    <p>
+                      <span className="detail-label">Categories</span>
+                      {book.categories.map((category) => category.name).join(", ")}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
     </main>
   );
 };

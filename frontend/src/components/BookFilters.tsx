@@ -18,9 +18,11 @@ export const BookFilters = ({
   onCategoryChange,
 }: BookFiltersProps) => {
   return (
-    <section>
-      <label>
-        Author:{" "}
+    <section className="filters-bar" aria-label="Filter books">
+      <span className="filter-count">Browse collection</span>
+      <div className="filter-fields">
+      <label className="filter-field">
+        Author
         <select
           value={authorId ?? ""}
           onChange={(event) => {
@@ -37,9 +39,9 @@ export const BookFilters = ({
             </option>
           ))}
         </select>
-      </label>{" "}
-      <label>
-        Category:{" "}
+      </label>
+      <label className="filter-field">
+        Category
         <select
           value={categoryId ?? ""}
           onChange={(event) => {
@@ -57,6 +59,7 @@ export const BookFilters = ({
           ))}
         </select>
       </label>
+      </div>
     </section>
   );
 };
