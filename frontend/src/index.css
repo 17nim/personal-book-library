@@ -328,6 +328,9 @@ input[type="checkbox"] {
   padding: 64px 0;
   text-align: center;
 }
+.loading-failed-message {
+  padding: 16px 0;
+}
 .loading-message {
   padding: 64px 0;
 }

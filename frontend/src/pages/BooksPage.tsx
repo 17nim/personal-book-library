@@ -124,7 +124,7 @@ export const BooksPage = () => {
             <p className="state-message loading-message">Loading your library...</p>
           ) : error ? (
             <>
-              <p className="state-message">{error}</p>
+              <p className="state-message loading-failed-message">{error}</p>
               <button className="button button-primary" onClick={loadBooks}>Try again</button>
             </>
           ) : books.length === 0 ? (
